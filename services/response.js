@@ -4,7 +4,7 @@ const config = require("config");
 
 function validationErrors(res, payload = {}) {
     return res.status(422).json({
-        status: false,
+        status: "error",
         error: payload
     });
 }
@@ -12,14 +12,14 @@ function validationErrors(res, payload = {}) {
 
 function success(res, msg = 'Operation successful') {
     return res.status(200).json({
-        status: true,
+        status: "success",
         message: msg
     });
 }
 
 function withDataAndMsg(res, msg = 'Operation successful', payload = {}) {
     return res.status(200).json({
-        status: true,
+        status: "success",
         message: msg,
         data: payload
     });
@@ -27,7 +27,7 @@ function withDataAndMsg(res, msg = 'Operation successful', payload = {}) {
 
 function withData(res, payload = {}) {
     return res.status(200).json({
-        status: true,
+        status: "success",
         data: payload
     });
 }
@@ -35,7 +35,7 @@ function withData(res, payload = {}) {
 
 function error(res, msg = 'Error Occured', code = 400) {
     return res.status(code).json({
-        status: false,
+        status: "error",
         message: msg
     });
 }

@@ -10,5 +10,5 @@ module.exports = function() {
     throw ex;
   });
   
-  winston.add(winston.transports.File, { filename: 'logfile.log' });
+  winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 }

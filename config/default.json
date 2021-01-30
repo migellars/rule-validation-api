@@ -1,8 +1,13 @@
 {
     "environment": "dev",
-    "app_name": "Rule-valiation API",
+    "app_name": "Rule-Valiation API",
     "dbMlab": "mongodb://localhost:27017/rvDb",
-    "port": "9700"
+    "port": "9700",
+    "profile_name": "Abe Michael Oluwaseun",
+    "github": "@migellars",
+    "email": "migellars@gmail.com",
+    "twitter": "@strtDev",
+    "mobile": "08067139857"
     
   }
   
