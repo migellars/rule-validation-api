@@ -3,9 +3,8 @@ const express = require("express");
 const config = require("config");
 const app = express();
 
-// require("./startup/logging")();
-//require("./startup/logger");
-require("./startup/db")();
+require("./startup/logging")();
+require("./startup/logger");
 require("./startup/routes")(app);
 
 const port = process.env.PORT || config.get("port");
