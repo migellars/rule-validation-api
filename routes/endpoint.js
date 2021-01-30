@@ -57,7 +57,9 @@ var getResponse = (body) => {
 
   // If a required field isn't passed in the rule object
   if (!rule.hasOwnProperty("field")) {
-    return getErrorPayload(responseMessage.INVALID_REQUIRED_FIELD("field"));
+    return getErrorPayload(
+      responseMessage.INVALID_REQUIRED_FIELD("rule field")
+    );
   }
 
   // If the field specified in the rule object is missing from the data passed,
@@ -120,7 +122,7 @@ var conditionSign = (condition) => {
     case "contains":
       return "includes";
     default:
-      break;
+      return;
   }
 };
 
@@ -129,9 +131,12 @@ var performOperation = (sign, value1, value2, body) => {
   var field = rule["field"];
   var res = false;
   if (sign != "includes") {
-    // console.log(`${value1}${sign}${value2}`);
+    if (sign === undefined)
+      return getErrorPayload(responseMessage.INVALID_JSON_PAYLOAD);
 
     if (eval(`${value1}${sign}${value2}`)) res = true;
+  } else {
+    if (value1.includes(value2)) res = true;
   }
 
   if (res) {
