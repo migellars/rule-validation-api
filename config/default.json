@@ -1,0 +1,10 @@
+{
+    "environment": "dev",
+    "app_name": "Rule-valiation API",
+    "dbMlab": "mongodb://localhost:27017/rvDb",
+    "port": "9700"
+    
+  }
+  
+  
+  
