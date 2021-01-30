@@ -1,0 +1,37 @@
+{
+  "name": "rule-validation-api",
+  "version": "0.0.2",
+  "description": "Rule validation api",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^3.2.0",
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "config": "^3.3.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "joi": "^17.3.0",
+    "mongoose": "^5.11.14",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev"
+    "start-dev-app": "SET NODE_ENV=dev nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/migellars/rule-validation-api.git"
+  },
+  "keywords": [
+    "validation"
+  ],
+  "author": "Migel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/migellars/rule-validation-api/issues"
+  },
+  "homepage": "https://github.com/migellars/rule-validation-api#readme"
+}
