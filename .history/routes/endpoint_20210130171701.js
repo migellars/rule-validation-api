@@ -1,0 +1,159 @@
+const config = require("config");
+const express = require("express");
+const response = require("../services/response");
+const router = express.Router();
+
+router.get("/", async (req, res) => {
+  getdata = {
+    name: config.get("profile_name"),
+    github: config.get("github"),
+    email: config.get("email"),
+    mobile: config.get("mobile"),
+    twitter: config.get("twitter"),
+  };
+
+  return response.withDataAndMsg(res, config.get("app_name"), getdata);
+});
+var payload = {
+  statusCode: 200,
+  data: {
+    data: {},
+  },
+};
+router.post("/validate-rule", async (req, res) => {
+  var payload = getResponse(req.body);
+  //   var fn = anotherFn(req.body);
+  //   console.log(fn);
+
+  //   var result = ruleHandler(fn);
+  //   console.log(result);
+
+  return response.withPayload(res, payload);
+});
+
+var getResponse = (body) => {
+  //   var payload = {
+  //     data: {},
+  //   };
+  var { rule, data } = body;
+  const ruleField = rule["field"];
+  const dataField = data[ruleField];
+  console.log(typeof rule);
+
+  //
+  if (rule === undefined) {
+    return getErrorPayload(responseMessage.RULE_FIELD_NOT_PASSED);
+  }
+
+  // if the rule field is passed as a number instead of a valid object
+  if (typeof rule !== "object") {
+    return getErrorPayload(responseMessage.INVALID_RULE_DATA_TYPE);
+  }
+
+  // If a required field isn't passed in the rule object
+  if (!rule.hasOwnProperty("field")) {
+    return getErrorPayload(responseMessage.INVALID_REQUIRED_FIELD("field"));
+  }
+
+  // If an invalid JSON payload is passed to your API
+  if (typeof data !== "object") {
+    return getErrorPayload(responseMessage.INVALID_JSON_PAYLOAD);
+  }
+  // If the field specified in the rule object is missing from the data passed,
+  if (!data.hasOwnProperty(rule["field"])) {
+    return getErrorPayload(
+      responseMessage.MISSING_FIELD_FROM_DATA(rule["field"])
+    );
+  }
+
+  // If a field is of the wrong type
+  if (typeof rule["condition_value"] !== typeof dataField) {
+    return getErrorPayload(
+      responseMessage.WRONG_TYPE(ruleField, typeof ruleField)
+    );
+  }
+
+  // This will process the operation
+};
+
+var getErrorPayload = (message) => {
+  return {
+    statusCode: 400,
+    data: {
+      message: message,
+      status: "error",
+      data: null,
+    },
+  };
+};
+var anotherFn = ({ rule, data }) => {
+  var condition = rule["condition"];
+  var field = rule["field"];
+  var value1 = data.hasOwnProperty(field) ? data[field] : "";
+  var value2 = rule["condition_value"];
+
+  return { condition, value1, value2 };
+};
+
+var ruleHandler = ({ condition, value1, value2 }) => {
+  var sign = conditionSign(condition);
+  // perform the operation
+  return performOperation(sign, value1, value2);
+};
+
+var conditionSign = (condition) => {
+  switch (condition) {
+    case "gte":
+      return ">=";
+    case "eq":
+      return "==";
+    case "neq":
+      return "!=";
+    case "gt":
+      return ">";
+    case "contains":
+      return "includes";
+    default:
+      break;
+  }
+};
+
+var performOperation = (sign, value1, value2, body) => {
+  var { rule, data } = body;
+  var res = false;
+  if (sign != "includes") {
+    // console.log(`${value1}${sign}${value2}`);
+
+    if (eval(`${value1}${sign}${value2}`)) res = true;
+  }
+
+  if (res) {
+    return {
+      message: `field [${rule[]}] successfully validated.",
+      status: "success",
+      data: {
+        validation: {
+          error: false,
+          field: "[name of field]",
+          field_value: "[value of field]",
+          condition: "[rule condition]",
+          condition_value: "[condition value]",
+        },
+      },
+    };
+  }
+};
+
+module.exports = router;
+
+const responseMessage = {
+  INVALID_JSON_PAYLOAD: "Invalid JSON payload passed.",
+  INVALID_REQUIRED_FIELD: (field) => `[${field}] is required.`,
+  RULE_FIELD_NOT_PASSED: "rule is required.",
+  WRONG_TYPE: (field, type) => `[${field}] should be a|an [${type}].`,
+  INVALID_RULE_DATA_TYPE: "rule should be an object.",
+  MISSING_FIELD_FROM_DATA: (field) => `field [${field}] is missing from data.`,
+  FILED_VALIDATION_SUCCESSFUL: (field) =>
+    `field [${field}] successfully validated.`,
+  FILED_VALIDATION_FAILED: (field) => `field [${field}] failed validation.`,
+};
